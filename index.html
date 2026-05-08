@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedFlash — Estudia Medicina Sin Límites</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── TOKENS ─── */
+    :root {
+      --blue:       #4b6ef6;
+      --blue-dark:  #3456e0;
+      --blue-light: #e8edff;
+      --bg:         #f0f2f5;
+      --surface:    #ffffff;
+      --text:       #1a1f36;
+      --muted:      #6b7280;
+      --radius:     16px;
+      --shadow-sm:  0 2px 8px rgba(75,110,246,.10);
+      --shadow-md:  0 8px 32px rgba(75,110,246,.16);
+      --shadow-lg:  0 20px 60px rgba(75,110,246,.18);
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(75,110,246,.08);
+      padding: 0 5vw;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 1.25rem; color: var(--blue);
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--blue);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon i { color: #fff; font-size: 1.1rem; }
+    .nav-links { display: flex; gap: 2rem; font-size: .9rem; font-weight: 600; color: var(--muted); }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-cta {
+      background: var(--blue); color: #fff;
+      padding: .5rem 1.2rem; border-radius: 50px;
+      font-weight: 700; font-size: .88rem;
+      box-shadow: var(--shadow-sm);
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: linear-gradient(135deg, #1a2a6c 0%, #3456e0 45%, #4b6ef6 100%);
+      position: relative; overflow: hidden;
+      padding: 100px 5vw 90px;
+      text-align: center;
+    }
+    /* decorative circles */
+    .hero::before, .hero::after {
+      content: ''; position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    .hero::before { width: 600px; height: 600px; top: -200px; left: -150px; }
+    .hero::after  { width: 400px; height: 400px; bottom: -180px; right: -100px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.15); color: #fff;
+      border: 1px solid rgba(255,255,255,.25);
+      padding: .35rem 1rem; border-radius: 50px;
+      font-size: .8rem; font-weight: 600; letter-spacing: .03em;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 3.5rem);
+      font-weight: 800; color: #fff;
+      line-height: 1.15; max-width: 780px; margin: 0 auto 1.2rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,.2);
+    }
+    .hero h1 span {
+      background: linear-gradient(90deg, #a5b4fc, #e0e7ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: rgba(255,255,255,.82); max-width: 600px; margin: 0 auto 2.4rem;
+    }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: var(--blue);
+      padding: .9rem 2rem; border-radius: 50px;
+      font-weight: 800; font-size: 1rem;
+      box-shadow: 0 6px 28px rgba(0,0,0,.18);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.22); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.15); color: #fff;
+      border: 1.5px solid rgba(255,255,255,.35);
+      padding: .9rem 2rem; border-radius: 50px;
+      font-weight: 700; font-size: 1rem;
+      backdrop-filter: blur(8px);
+      transition: background .2s, transform .2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.25); transform: translateY(-3px); }
+
+    /* floating cards in hero */
+    .hero-cards {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 1rem; margin-top: 3.5rem; position: relative; z-index: 1;
+    }
+    .hero-card {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius); padding: 1rem 1.4rem;
+      display: flex; align-items: center; gap: 10px;
+      color: #fff; font-size: .88rem; font-weight: 600;
+    }
+    .hero-card i { font-size: 1.2rem; color: #a5b4fc; }
+
+    /* ─── SECTIONS SHARED ─── */
+    section { padding: 80px 5vw; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--blue); font-weight: 700; font-size: .8rem;
+      letter-spacing: .08em; text-transform: uppercase;
+      background: var(--blue-light); padding: .3rem .9rem;
+      border-radius: 50px; margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 800; line-height: 1.2; margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1.05rem; max-width: 580px;
+    }
+    .container { max-width: 1100px; margin: auto; }
+
+    /* ─── FEATURES ─── */
+    .features { background: var(--surface); }
+    .features-header { text-align: center; margin-bottom: 3.5rem; }
+    .features-header .section-sub { margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .feat-card {
+      background: var(--bg); border-radius: var(--radius);
+      padding: 2rem; position: relative; overflow: hidden;
+      border: 1.5px solid transparent;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+    }
+    .feat-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .feat-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: var(--blue-light); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .feat-icon i { font-size: 1.4rem; color: var(--blue); }
+    .feat-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
+    .feat-card p { font-size: .92rem; color: var(--muted); line-height: 1.65; }
+
+    /* highlighted card */
+    .feat-card.highlight {
+      background: var(--blue);
+    }
+    .feat-card.highlight .feat-icon { background: rgba(255,255,255,.2); }
+    .feat-card.highlight .feat-icon i { color: #fff; }
+    .feat-card.highlight h3, .feat-card.highlight p { color: #fff; }
+    .feat-card.highlight p { color: rgba(255,255,255,.8); }
+
+    /* ─── ALGORITHM SPOTLIGHT ─── */
+    .algo { background: var(--bg); }
+    .algo-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .algo-visual {
+      background: var(--surface); border-radius: var(--radius);
+      padding: 2rem; box-shadow: var(--shadow-md);
+    }
+    .algo-title { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 1.2rem; }
+    .answer-box {
+      background: var(--bg); border-radius: 12px; padding: 1rem 1.2rem;
+      font-size: .9rem; color: var(--text); margin-bottom: 1rem;
+      border: 1.5px solid rgba(75,110,246,.15);
+    }
+    .answer-box .label { font-size: .72rem; font-weight: 700; color: var(--muted); margin-bottom: .3rem; text-transform: uppercase; }
+    .answer-row {
+      display: flex; align-items: flex-start; gap: .7rem;
+    }
+    .answer-row i { margin-top: 2px; font-size: 1rem; flex-shrink: 0; }
+    .check { color: #22c55e; }
+    .partial { color: #f59e0b; }
+    .score-bar { margin-top: 1.2rem; }
+    .score-label { display: flex; justify-content: space-between; font-size: .8rem; font-weight: 600; margin-bottom: .4rem; }
+    .bar-track { background: var(--bg); border-radius: 50px; height: 8px; }
+    .bar-fill { height: 8px; border-radius: 50px; background: linear-gradient(90deg, var(--blue), #818cf8); }
+    .synonyms-row {
+      display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem;
+    }
+    .syn-tag {
+      background: var(--blue-light); color: var(--blue);
+      padding: .2rem .7rem; border-radius: 50px; font-size: .78rem; font-weight: 600;
+    }
+
+    /* ─── STEPS ─── */
+    .steps { background: var(--surface); }
+    .steps-header { text-align: center; margin-bottom: 3.5rem; }
+    .steps-header .section-sub { margin: 0 auto; }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem; position: relative;
+    }
+    .step-card {
+      background: var(--bg); border-radius: var(--radius); padding: 2rem;
+      text-align: center; position: relative;
+    }
+    .step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      font-weight: 800; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.2rem;
+      box-shadow: 0 4px 16px rgba(75,110,246,.35);
+    }
+    .step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem; }
+    .step-card p { font-size: .9rem; color: var(--muted); }
+    .step-detail {
+      display: inline-block; margin-top: .8rem;
+      background: var(--blue-light); color: var(--blue);
+      padding: .3rem .9rem; border-radius: 50px; font-size: .8rem; font-weight: 700;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: linear-gradient(135deg, #1a2a6c 0%, #3456e0 50%, #4b6ef6 100%);
+      text-align: center; padding: 90px 5vw;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #fff;
+      margin-bottom: 1rem; max-width: 640px; margin-left: auto; margin-right: auto;
+    }
+    .cta-section p { color: rgba(255,255,255,.78); font-size: 1.05rem; margin-bottom: 2.4rem; }
+    .cta-btns { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: var(--blue);
+      padding: .9rem 2.2rem; border-radius: 50px;
+      font-weight: 800; font-size: 1rem;
+      box-shadow: 0 6px 28px rgba(0,0,0,.18);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.22); }
+    .btn-tg {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.15); color: #fff;
+      border: 1.5px solid rgba(255,255,255,.35);
+      padding: .9rem 2.2rem; border-radius: 50px;
+      font-weight: 700; font-size: 1rem;
+      backdrop-filter: blur(8px);
+      transition: background .2s, transform .2s;
+    }
+    .btn-tg:hover { background: rgba(255,255,255,.25); transform: translateY(-3px); }
+
+    /* ─── FAQ / TRUST ─── */
+    .trust { background: var(--bg); }
+    .trust-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+    .trust-card {
+      background: var(--surface); border-radius: var(--radius); padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .trust-card i { font-size: 1.5rem; color: var(--blue); margin-bottom: .8rem; display: block; }
+    .trust-card h4 { font-weight: 700; margin-bottom: .4rem; }
+    .trust-card p { font-size: .88rem; color: var(--muted); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #1a1f36; color: rgba(255,255,255,.5);
+      text-align: center; padding: 2.5rem 5vw; font-size: .85rem;
+    }
+    footer strong { color: #fff; }
+    footer .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: .8rem; }
+    footer .footer-links a { color: rgba(255,255,255,.5); font-size: .82rem; }
+    footer .footer-links a:hover { color: #fff; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-badge, .hero h1, .hero p, .hero-btns, .hero-cards { animation: fadeUp .65s ease both; }
+    .hero h1   { animation-delay: .1s; }
+    .hero p    { animation-delay: .2s; }
+    .hero-btns { animation-delay: .3s; }
+    .hero-cards{ animation-delay: .45s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .algo-inner { grid-template-columns: 1fr; gap: 2rem; }
+      section { padding: 60px 5vw; }
+      .hero { padding: 70px 5vw 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ NAV ════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-icon"><i class="ph ph-heartbeat"></i></div>
+      MedFlash
+    </div>
+    <div class="nav-links">
+      <a href="#caracteristicas">Características</a>
+      <a href="#como-comprar">Cómo Comprar</a>
+      <a href="#confianza">Soporte</a>
+    </div>
+    <a href="activar.html" class="nav-cta">Activar Licencia</a>
+  </div>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="hero">
+  <div class="hero-badge">
+    <i class="ph ph-sparkle"></i> Hecho en Cuba para estudiantes cubanos.
+  </div>
+  <h1>
+    Estudia de forma<br>
+    <span>inteligente y sin internet</span>
+  </h1>
+  <p>
+    Olvídate de las tarjetas de papel y las horas perdidas repasando lo que ya sabes. MedFlash entiende <em>cómo piensas</em> y te evalúa como si fuera un examinador real — 100% offline.
+  </p>
+  <div class="hero-btns">
+    <a href="descargar.html" class="btn-primary">
+      <i class="ph-fill ph-download-simple"></i> Descargar Gratis
+    </a>
+    <a href="https://t.me/https://t.me/Meloss_19?text=Hola,%20estoy%20interesado%20en%20comprar%20la%20app" target="_blank" class="btn-secondary">
+      <i class="ph ph-telegram-logo"></i> Comprar Ticket
+    </a>
+    <a href="https://meloss19.github.io/Medflash-web/" target="_blank" class="btn-secondary">
+    <i class="ph ph-monitor"></i> Versión Web Gratis
+     </a>
+
+  </div>
+  <div class="hero-cards">
+    <div class="hero-card"><i class="ph ph-wifi-x"></i> Sin conexión a internet</div>
+    <div class="hero-card"><i class="ph ph-device-mobile"></i> Android y Windows</div>
+    <div class="hero-card"><i class="ph ph-brain"></i> Algoritmo TF-IDF con sinónimos</div>
+    <div class="hero-card"><i class="ph ph-currency-circle-dollar"></i> Pago por Transfermóvil</div>
+  </div>
+</section>
+
+<!-- ════════════════ FEATURES ════════════════ -->
+<section class="features" id="caracteristicas">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-label"><i class="ph ph-lightning"></i> Funcionalidades</div>
+      <h2 class="section-title">Todo lo que necesitas para aprender</h2>
+      <p class="section-sub">MedFlash no es solo otra app de estudio. Es un sistema de estudio adaptativo que trabaja <em>contigo</em>.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card highlight">
+        <div class="feat-icon"><i class="ph ph-atom"></i></div>
+        <h3>Algoritmo de Evaluación Inteligente</h3>
+        <p>Nuestro motor TF-IDF entiende el significado de tu respuesta. Puedes decir "hipertensión arterial" o "tensión alta" — MedFlash sabe que es lo mismo.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ph ph-wifi-x"></i></div>
+        <h3>100% Offline</h3>
+        <p>No dependas de datos móviles ni de una conexión estable. Estudia en el transporte, en casa, en cualquier lugar — cuando tú lo decides.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ph ph-trend-up"></i></div>
+        <h3>Repetición Espaciada</h3>
+        <p>El sistema aprende qué temas dominas y cuáles necesitas reforzar, y programa las revisiones en el momento justo para maximizar tu retención.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ph ph-pencil-line"></i></div>
+        <h3>Respuestas en Lenguaje Natural</h3>
+        <p>Escribe como si le explicaras a un colega. No opciones múltiples, no llenar espacios: un examen real que prepara para la realidad.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ph ph-device-mobile"></i></div>
+        <h3>Android y Windows</h3>
+        <p>Estudia en tu teléfono durante el día y repasa en tu PC por la noche. Una sola licencia, múltiples dispositivos según tu plan.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ph ph-chart-bar"></i></div>
+        <h3>Estadísticas de Progreso</h3>
+        <p>Visualiza cuánto has mejorado, qué áreas dominan tu estudio y cuánto tiempo has invertido. El esfuerzo se convierte en datos concretos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ ALGORITHM SPOTLIGHT ════════════════ -->
+<section class="algo" id="algoritmo">
+  <div class="container">
+    <div class="algo-inner">
+      <div>
+        <div class="section-label"><i class="ph ph-brain"></i> Motor de evaluación</div>
+        <h2 class="section-title">El evaluador que entiende conceptos, no solo palabras</h2>
+        <p style="color:var(--muted); margin-bottom:1.5rem;">
+          La mayoría de las apps rechazan tu respuesta si no coincide exactamente con el texto del libro. MedFlash es diferente: detecta sinónimos clínicos, variaciones de escritura y conceptos equivalentes para darte una evaluación justa.
+        </p>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:.9rem;">
+          <li style="display:flex;align-items:flex-start;gap:.8rem;">
+            <span style="margin-top:3px;flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;">
+              <i class="ph ph-check" style="color:var(--blue);font-size:.8rem;"></i>
+            </span>
+            <span style="font-size:.95rem;color:var(--text);">Detecta equivalencias lógicas: <em>Computadora</em> = <em>Ordenador</em> = <em>= PC</em></span>
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.8rem;">
+            <span style="margin-top:3px;flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;">
+              <i class="ph ph-check" style="color:var(--blue);font-size:.8rem;"></i>
+            </span>
+            <span style="font-size:.95rem;color:var(--text);">Puntaje inteligente: si aciertas los conceptos clave pero te falta precisión técnica, el sistema te rescata.</span>
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:.8rem;">
+            <span style="margin-top:3px;flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;">
+              <i class="ph ph-check" style="color:var(--blue);font-size:.8rem;"></i>
+            </span>
+            <span style="font-size:.95rem;color:var(--text);">Ignora errores ortográficos menores y artículos irrelevantes</span>
+          </li>
+        </ul>
+      </div>
+   <div class="algo-visual">
+  <div class="algo-title">Análisis en tiempo real</div>
+  
+  <div class="answer-box">
+    <div class="label">Pregunta en tu tarjeta</div>
+    ¿Qué sucede con el agua cuando alcanza los 100°C a nivel del mar?
+  </div>
+  
+  <div class="answer-box" style="border-color: var(--blue-light); background: #f8faff;">
+    <div class="label" style="color: var(--blue);">Respuesta que guardaste</div>
+    <div style="font-size:.85rem; color: var(--text);">
+      "El líquido entra en estado de <strong>ebullición</strong> y se convierte en vapor."
+    </div>
+  </div>
+
+  <div class="answer-box">
+    <div class="label">Tu respuesta al estudiar</div>
+    <div class="answer-row">
+      <i class="ph-fill ph-check-circle check" style="color: #22c55e;"></i>
+      <span>El agua empieza a <strong>hervir</strong> y se transforma en gas</span>
+    </div>
+  </div>
+  
+  <div class="score-bar">
+    <div class="score-label">
+      <span>Puntaje Final</span>
+      <span style="color:var(--blue);">75%</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:75%;"></div></div>
+  </div>
+  
+  <div style="font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 15px; padding: 10px; border-top: 1px solid #eee;">
+    <i class="ph ph-sparkle" style="color: #f59e0b;"></i> 
+    <strong>Inteligencia MedFlash:</strong> La idea es correcta, pero hubo cambios en la precisión del vocabulario respecto a la respuesta esperada.
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ STEPS ════════════════ -->
+<section class="steps" id="como-comprar">
+  <div class="container">
+    
+    <div style="background: var(--surface); padding: 40px; border-radius: var(--radius); text-align: center; margin-bottom: 60px; border: 1px solid var(--blue-light); box-shadow: var(--shadow-md); position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 15px; right: -35px; background: #ffbc00; color: #000; padding: 5px 40px; transform: rotate(45deg); font-size: 0.75rem; font-weight: 800; letter-spacing: 1px;">PREMIUM</div>
+      
+      <h2 style="color: var(--text); margin-bottom: 10px;">Licencia MedFlash PRO</h2>
+      <p style="color: var(--muted); margin-bottom: 25px;">Pago único, acceso total a todas las funciones y actualizaciones de por vida.</p>
+      
+      <div style="font-size: 4rem; font-weight: 800; color: var(--blue); line-height: 1; margin-bottom: 10px;">
+        1000 <span style="font-size: 1.5rem; color: var(--muted); font-weight: 600;">CUP</span>
+      </div>
+      
+      <p style="font-weight: 700; color: var(--text); margin-bottom: 20px;">Pago único • Sin mensualidades</p>
+      
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; color: var(--muted); font-size: 0.9rem;">
+        <span><i class="ph ph-check-circle" style="color: var(--blue);"></i> Válida para 3 dispositivos (PC / Android)</span>
+        <span><i class="ph ph-check-circle" style="color: var(--blue);"></i> Soporte Directo</span>
+        <span><i class="ph ph-check-circle" style="color: var(--blue);"></i> 100% Offline</span>
+      </div>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Escríbeme</h3>
+        <p>Contáctame por Telegram para solicitar tu licencia. Te enviaré los datos actuales para el pago (Transfermóvil/Enzona).</p>
+        <a href="https://t.me/https://t.me/Meloss_19?text=Hola,%20estoy%20interesado%20en%20comprar%20la%20app" target="_blank" class="step-detail" style="display: inline-flex; align-items: center; gap: 5px;">
+          <i class="ph ph-telegram-logo"></i> Iniciar chat ahora
+        </a>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Paga y confirma</h3>
+        <p>Realiza la transferencia de los <strong>1000 CUP</strong> y envíame la captura. Recibirás tu <strong>Ticket único</strong> al instante.</p>
+        <span class="step-detail">Proceso rápido y manual</span>
+      </div>
+
+     <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Abre la App</h3>
+        <p>Instala y abre MedFlash. Sigue los pasos que se te indican para activar tu dispositivo usando el Ticket que te envié.</p>
+        <span class="step-detail">¡Listo para estudiar!</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ CTA ════════════════ -->
+<section class="cta-section">
+  <h2>¿Listo para estudiar de verdad?</h2>
+  <p>Descarga MedFlash, activa tu licencia y empieza hoy. Tu próximo examen ya no puede esperarte.</p>
+  <div class="cta-btns">
+    <a href="activar.html" class="btn-white">
+      <i class="ph-fill ph-key"></i> Activar mi Licencia
+    </a>
+    <a href="https://t.me/TU_USUARIO" target="_blank" class="btn-tg">
+      <i class="ph ph-telegram-logo"></i> Comprar Ticket en Telegram
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════ TRUST ════════════════ -->
+<section class="trust" id="confianza">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <div class="section-label"><i class="ph ph-shield-check"></i> Confianza</div>
+      <h2 class="section-title">Preguntas frecuentes</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <i class="ph ph-wifi-x"></i>
+        <h4>¿Funciona sin internet?</h4>
+        <p>Sí, al 100%. Una vez activada la licencia, todas las funciones están disponibles offline. Solo necesitas conexión para activar por primera vez.</p>
+      </div>
+      <div class="trust-card">
+        <i class="ph ph-devices"></i>
+        <h4>¿En cuántos dispositivos puedo usarlo?</h4>
+        <p>Cada Ticket tiene 3 usos, lo que te permite activar hasta 3 dispositivos diferentes (Android o Windows).</p>
+      </div>
+      <div class="trust-card">
+        <i class="ph ph-clock"></i>
+        <h4>¿Cuánto tiempo tarda en activarse?</h4>
+        <p>Activación instantánea. En cuanto recibas tu ticket por Telegram, tú mismo activas la app al momento. El proceso es inmediato y sin esperas.</p>
+      </div>
+      <div class="trust-card">
+        <i class="ph ph-question"></i>
+        <h4>¿Qué pasa si tengo un problema?</h4>
+        <p>Escríbeme directamente por Telegram. Doy soporte personalizado a cada usuario — no eres un ticket de soporte, eres un estudiante.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <strong>MedFlash</strong> — Aplicación de estudio inteligente
+  <div class="footer-links">
+    <a href="activar.html">Activar Licencia</a>
+    <a href="https://t.me/https://t.me/Meloss_19?text=Hola,%20estoy%20interesado%20en%20comprar%20la%20app" target="_blank">Telegram</a>
+  </div>
+  <div style="margin-top:1rem;font-size:.78rem;">
+    Hecho con <i class="ph-fill ph-heart" style="color:#f87171;"></i> para estudiantes en Cuba
+  </div>
+</footer>
+
+</body>
+</html>
